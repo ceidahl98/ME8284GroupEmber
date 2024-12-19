@@ -48,6 +48,7 @@ Steven Bleau - Manager  - bleau005@umn.edu <br>
 Tanishq Kondru - Mechanical Lead - kondr047@umn.edu <br>
 Bhushan Ravikumar - Embedded Lead - ravik039@umn.edu <br>
 Christian Eidahl - Software Lead - eidah008@umn.edu<br>
+Presentation Link - https://docs.google.com/presentation/d/1gzG7nX9yIYpV8Sguc6VtCDecFwN85_nHTxf5PM2ZiTg/edit?usp=sharing
 
 
 
