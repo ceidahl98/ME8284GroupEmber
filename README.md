@@ -1,15 +1,15 @@
-# HapticTelegraph
+# HapticTelegraph Teleoperation With Variable Time Delay
 
 
-The Haptic Telegraph is an open-source educational project to learn the basics of mechatronic sensing and control of motion, force, and impedance for one or more degrees or freedom along with basi teleoperation.  Inspired by the [HapKit](https://hapkit.stanford.edu/) open source Haptics learning project, the the haptic telegraph has two degrees of freedom (DOF) with the option to teleoperate over the internet and interconnect different haptic telegraphs to experiment with bilateral teleoperation.  
+Our project uses the haptic telegraph used in class and the assembly instructions are linked below. The haptic telegraph consists of 2 hobby servos, 2 load cells to measure forces applied on the operator control (load cell A) and the end effector (load cell B), and a teensy 4.0 microcontroller is used to receive and send force values from the servos as well as interface with the computer over serial connection.  The purpose of this project is to investigate how variable time delay (unstable internet connection) will effect teleoperation, specifically looking at how it effects operator confidence via task completion time and how smoothly the task can be completed. 
 
-The platform uses a Teensy 4.0 microcontroller and breadboard to allow prototyping and easier modifications.  Sensing includes potentiometers, encoders, and load cells (HX711); actuators include hobby servos, N20 gearmotors, and direct-drive DC motors; an DRV8833 H-Bridge for driving up to two DC motors, and a simple way of attaching actuators in various configurations.  This includes side-by-side configurations or serlial linkages like a 2-link revolute joint robot with integrated torque sensing. 
+ 
+
 
 ![The Haptic Telegraph](HapticTelegraph3Dmodel.png)
 
 
-## Building and Assembly 
-All parts required for the different configurations of the telegrpaph are linked here.  The kit has hobby servo motors, N20 gear motor+encoders, direct drive DC motor for capstan, or DC motorized slide-potentiometer actuators.  The servo and N20 configurations are the default.  
+## Building and Assembly  
 
 [Haptic Telegraph Assembly Guide](https://docs.google.com/document/d/17Dt6qZLQLV2zLom0jG1yqs2Jcs7Xk3iRWMrtn3mGbbk/preview)
 
@@ -21,24 +21,33 @@ All parts required for the different configurations of the telegrpaph are linked
 
 
 
-
 ## Software and Firmware
-A brief introduction to the python scripts to teleoperate the kit and to run the firmware can be found here: <br>
-[Haptic Telegraph Software Guide](https://docs.google.com/document/d/1zL3_G8BJS4lk9wN5zXE0Af6u3FeUNIUszWQ2UWdJn5c/preview)
+The python scripts and c program provided allow for simulating teleoperated control over udp with variable time delay. The python script handles locally sending data over udp and adding an artifical variable time delay. The c program interfaces the teensy with the computer by reading and writing forces to/from the servos and to/from the computer. 
+
+The operator interfaces with the telegraph by applying force on load cell A. This force is immediately sent by the teensy over serial to the computer where it is sent locally over UDP and then held for a delay time determined by a value sampled from a gaussian distribution with the mean being the base latency and the variance being the desired latency variance. This force is then sent back to the teensy over serial and immediately applied to servo B. The same process happens for forces applied to servo B so the force felt on servo B is then felt on servo A delayed by the sampled latency.  
+
+Operation Instructions:
+1. Install the anaconda environment found in environment.yaml
+2. Connect the teensy to the COM3 serial port on your computer. 
+3. Upload the file found at "ME8284GroupEmber/firmware/HapticTelegraph_Diagnostics/HapticTelegraph_Diagnostics.ino" to the teensy using the arduino IDE
+4. IMPORTANT: Close the serial monitor in the arduino IDE so that it releases the serial port. The python script will not be able to read or write to the serial port while this is open.
+   You can do this by going to the tools tab and selecting "Serial Monitor". A window at the bottom of the IDE should open and be printing readings from the teensy. Click on the X on the serial monitor window to close it.
+   The serial port should now be open for the python script to access.
+5. Select the desired base latency and latency varience by editing lines 25 and 26 in udp_csv_write.py (values are in seconds)
+6. You can now run udp_csv_write.py by navigating to the software directory where the script is located and in a terminal typing "python udp_csv_write.py" (full path - "ME8284GroupEmber/software/udp_csv_write")
+7. Make sure the large button on the top of the haptic telegraph is pressed down and the haptic telegraph should now be operational.
+8. Pressing and holding down the "R" key on your keyboard will cause the python script to begin recording force values applied on load cell A and B. Releasing the key will write the collected force values to a csv file for further analysis
 
 
-## Resources
-A great intro to haptics, teleoperation, and related terminology can be found here:
-[Do It Yourself Haptics: Part I](https://ieeexplore.ieee.org/document/4437756)    
-V. Hayward and K. E. Maclean, "Do it yourself haptics: part I," in IEEE Robotics & Automation Magazine, vol. 14, no. 4, pp. 88-104, Dec. 2007, doi: 10.1109/M-RA.2007.90792
-
-A widely acclaimed, more thorough treatment from Prof. Allison Okamura is here:
-https://web.stanford.edu/class/me327/
 
 ### Info
 ME8284 Intermediate Robotics with Medical Applications Graduate Level Course <br>
 University of Minnesota Mechanical Engineering, Fall 2024 <br>
-Prof. Timothy M. Kowalewski, timk@umn.edu
-Pin-Hao Cheng, cheng741@umn.edu
+Group Ember
+Steven Bleau - Manager  - bleau005@umn.edu <br>
+Tanishq Kondru - Mechanical Lead - kondr047@umn.edu <br>
+Bhushan Ravikumar - Embedded Lead - ravik039@umn.edu <br>
+Christian Eidahl - Software Lead - eidah008@umn.edu<br>
+
 
 
