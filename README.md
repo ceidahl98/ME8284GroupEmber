@@ -27,7 +27,7 @@ The python scripts and c program provided allow for simulating teleoperated cont
 The operator interfaces with the telegraph by applying force on load cell A. This force is immediately sent by the teensy over serial to the computer where it is sent locally over UDP and then held for a delay time determined by a value sampled from a gaussian distribution with the mean being the base latency and the variance being the desired latency variance. This force is then sent back to the teensy over serial and immediately applied to servo B. The same process happens for forces applied to servo B so the force felt on servo B is then felt on servo A delayed by the sampled latency.  
 
 Operation Instructions:
-1. Install the anaconda environment found in environment.yaml
+1. Install the conda environment from "requirments.txt" by typing "pip install -r requirements.txt" in an anaconda terminal
 2. Connect the teensy to the COM3 serial port on your computer. 
 3. Upload the file found at "ME8284GroupEmber/firmware/HapticTelegraph_Diagnostics/HapticTelegraph_Diagnostics.ino" to the teensy using the arduino IDE
 4. IMPORTANT: Close the serial monitor in the arduino IDE so that it releases the serial port. The python script will not be able to read or write to the serial port while this is open.
